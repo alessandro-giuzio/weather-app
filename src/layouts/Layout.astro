@@ -1,4 +1,5 @@
 ---
+const { title = 'El tiempo' } = Astro.props;
 import '@/styles/global.css';
 ---
 
@@ -9,9 +10,10 @@ import '@/styles/global.css';
     <meta name='viewport' content='width=device-width' />
     <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
     <meta name='generator' content={Astro.generator} />
-    <title>El tiempo</title>
+    <title>{title}</title>
   </head>
-  <body>
+  <body
+    class='bg-gradient-to-br from-sky-100 to-sky-300 text-sky-900 min-h-screen p-4 font-sans'>
     <slot />
   </body>
 </html>
