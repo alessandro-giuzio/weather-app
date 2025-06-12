@@ -1,4 +1,27 @@
 @import 'tailwindcss';
+/* Supports weights 200-900 */
+@import '@fontsource-variable/nunito';
+
+body {
+  font-family: 'Nunito Variable', sans-serif;
+}
+
+footer {
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  text-align: center;
+  color: #0369a1; /* Tailwind's sky-700 */
+}
+
+footer a {
+  color: inherit;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+footer a:hover {
+  text-decoration: none;
+}
 
 @keyframes pop-fade {
   0% {

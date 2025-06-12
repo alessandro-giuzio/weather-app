@@ -13,8 +13,14 @@
 
     <WeatherCard v-if="weatherData" :weather="weatherData" />
 
-    <footer class="text-xs text-sky-600 mt-12">
-      Built with Astro, Vue & WeatherAPI.com
+    <footer>
+      Built with 💙 by
+      <a
+        href="https://www.agencyga.es"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Agency GA</a
+      >
     </footer>
   </div>
 </template>
