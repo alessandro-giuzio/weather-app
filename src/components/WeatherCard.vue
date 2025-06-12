@@ -24,11 +24,11 @@
     <!-- 🔮 Forecast (This is the part you asked about) -->
     <div class="pt-4 space-y-2">
       <h3 class="text-lg font-semibold text-sky-700">Next 2 Days</h3>
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-2 gap-4 sm:gap-6">
         <div
           v-for="(day, index) in weather.forecast.forecastday.slice(1)"
           :key="index"
-          class="bg-white/60 rounded-lg p-3 shadow-sm backdrop-blur">
+          class="bg-white/60 rounded-lg p-4 shadow-sm backdrop-blur transition-transform duration-200 ease-out hover:scale-[1.03] active:scale-100 touch-manipulation animate-pop-fade">
           <p class="text-sm text-sky-800 font-medium">
             {{
               new Date(day.date).toLocaleDateString('en-US', {
@@ -39,9 +39,9 @@
           <img
             :src="day.day.condition.icon"
             :alt="day.day.condition.text"
-            class="w-8 h-8 mx-auto" />
-          <p class="text-sm text-sky-600">{{ day.day.condition.text }}</p>
-          <p class="text-lg font-bold">{{ day.day.avgtemp_c }}°C</p>
+            class="w-10 h-10 mx-auto" />
+          <p class="text-sm text-sky-600 mt-1">{{ day.day.condition.text }}</p>
+          <p class="text-lg font-bold mt-1">{{ day.day.avgtemp_c }}°C</p>
         </div>
       </div>
     </div>
