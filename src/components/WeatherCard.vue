@@ -1,13 +1,13 @@
 <template>
   <div
     v-if="weather"
-    class="bg-white/80 rounded-xl shadow p-6 text-center space-y-2 backdrop-blur-sm animate-fade-in-up">
+    class="max-w-md w-full mx-auto bg-white/80 rounded-xl shadow p-4 sm:p-6 text-center space-y-2 backdrop-blur-sm animate-fade-in-up">
     <!-- 📍 Current Weather -->
-    <h2 class="text-xl font-semibold">
+    <h2 class="text-lg sm:text-xl font-semibold">
       {{ weather.location.name }}, {{ weather.location.country }}
     </h2>
 
-    <p class="text-4xl font-bold">{{ weather.current.temp_c }}°C</p>
+    <p class="text-3xl sm:text-4xl font-bold">{{ weather.current.temp_c }}°C</p>
 
     <p class="text-sky-500 capitalize">
       {{ weather.current.condition.text }}
@@ -24,7 +24,7 @@
     <!-- 🔮 Forecast (This is the part you asked about) -->
     <div class="pt-4 space-y-2">
       <h3 class="text-lg font-semibold text-sky-700">Next 2 Days</h3>
-      <div class="grid grid-cols-2 gap-4 sm:gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
         <div
           v-for="(day, index) in weather.forecast.forecastday.slice(1)"
           :key="index"

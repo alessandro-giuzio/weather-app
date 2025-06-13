@@ -6,7 +6,7 @@ import '@fontsource-variable/nunito-sans';
 ---
 
 <!doctype html>
-<html lang='es'>
+<html lang='en'>
   <head>
     <meta charset='UTF-8' />
     <meta name='viewport' content='width=device-width' />
@@ -15,16 +15,9 @@ import '@fontsource-variable/nunito-sans';
     <title>{title}</title>
   </head>
   <body
-    class='bg-gradient-to-br from-sky-100 to-sky-300 text-sky-900 min-h-screen p-4 font-sans'>
-    <slot />
+    class='bg-gradient-to-br from-sky-100 to-sky-300 text-sky-900 min-h-screen p-4 font-sans flex flex-col'>
+    <div class='flex-grow'>
+      <slot />
+    </div>
   </body>
 </html>
-
-<style>
-  html,
-  body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-  }
-</style>

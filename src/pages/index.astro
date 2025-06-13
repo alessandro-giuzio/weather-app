@@ -1,14 +1,14 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import WeatherSearch from '../components/WeatherSearch.vue';
-import WeatherCard from '../components/WeatherCard.vue';
+import Header from '../components/Header.astro';
+import Footer from '@/components/Footer.astro';
 import WeatherApp from '../components/WeatherApp.vue';
 ---
 
 <Layout title='Weather App'>
   <main class='max-w-md mx-auto space-y-6 text-center'>
-    <main class='max-w-md mx-auto space-y-6 text-center'>
-      <WeatherApp client:load />
-    </main>
+    <Header />
+    <WeatherApp client:load />
   </main>
+  <Footer />
 </Layout>

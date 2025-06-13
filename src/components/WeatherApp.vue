@@ -1,10 +1,5 @@
 <template>
   <div class="space-y-6">
-    <header>
-      <h1 class="text-4xl font-bold mb-2">🌤️ Weather App</h1>
-      <p class="text-sm text-sky-700">Check the weather in any city</p>
-    </header>
-
     <WeatherSearch @search="fetchWeather" />
 
     <div v-if="loading" class="text-sky-600 animate-pulse">Loading...</div>
@@ -12,16 +7,6 @@
     <div v-if="error" class="text-red-600">{{ error }}</div>
 
     <WeatherCard v-if="weatherData" :weather="weatherData" />
-
-    <footer>
-      Built with 💙 by
-      <a
-        href="https://www.agencyga.es"
-        target="_blank"
-        rel="noopener noreferrer"
-        >Agency GA</a
-      >
-    </footer>
   </div>
 </template>
 
