@@ -9,9 +9,6 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@fontsource-variable/nunito": "^5.2.6",
-    "@fontsource-variable/nunito-sans": "^5.2.6",
-    "@tailwindcss/vite": "^4.1.8",
     "astro": "^5.9.0",
     "tailwindcss": "^4.1.8",
     "vue": "^3.5.16"
