@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@astrojs/vue": "^5.1.0",
+    "@fontsource-variable/nunito-sans": "^5.2.6",
     "@tailwindcss/vite": "^4.1.10",
     "astro": "^5.9.0",
     "tailwindcss": "^4.1.10",
