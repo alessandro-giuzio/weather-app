@@ -1,48 +1,102 @@
-# Astro Starter Kit: Basics
+# Weather App
+
+A modern, responsive weather forecast app built with [Astro](https://astro.build/), [Vue 3](https://vuejs.org/), and [Tailwind CSS](https://tailwindcss.com/). Get current and multi-day weather forecasts for any city, with a beautiful UI and PWA support.
+
+---
+
+## Features
+
+- 🌤️ Search for any city and get current weather
+- 📅 3-day forecast with icons and details
+- 📍 Responsive design for mobile and desktop
+- 🎨 Clean, modern UI with Tailwind CSS
+- ⚡ Fast, static site built with Astro
+- 🖼️ Weather condition icons from WeatherAPI
+- 🦾 PWA support (installable on mobile/desktop)
+
+---
+
+## Screenshots
+
+<!-- Add screenshots here -->
+
+![Screenshot 1](/public/assets/images/weatherAPP.png)
+
+---
+
+## Tech Stack
+
+- [Astro](https://astro.build/) (static site generator)
+- [Vue 3](https://vuejs.org/) (UI components)
+- [Tailwind CSS](https://tailwindcss.com/) (utility-first CSS)
+- [WeatherAPI](https://www.weatherapi.com/) (weather data)
+
+---
+
+## Getting Started
+
+### 1. Clone the repository
 
 ```sh
-npm create astro@latest -- --template basics
+git clone https://github.com/alessandro-giuzio/weather-app.git
+cd weather-app
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+### 2. Install dependencies
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+```sh
+npm install
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+### 3. Set up environment variables
 
-## 🧞 Commands
+Create a `.env` file in the project root:
 
-All commands are run from the root of the project, from a terminal:
+```
+PUBLIC_WEATHER_API_KEY=your_weatherapi_key_here
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Get your free API key from [WeatherAPI](https://www.weatherapi.com/).
 
-## 👀 Want to learn more?
+### 4. Run locally
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+```sh
+npm run dev
+```
+
+Visit [http://localhost:4321](http://localhost:4321) in your browser.
+
+---
+
+## Deployment
+
+1. **Build the app:**
+
+```sh
+npm run build
+```
+
+2. **Deploy the `dist/` folder** to your static host (Vercel, Netlify, GitHub Pages, etc.)
+3. **Set the `PUBLIC_WEATHER_API_KEY`** in your host's environment variables dashboard.
+
+---
+
+## PWA Support
+
+- The app is installable on mobile and desktop.
+- Add to home screen for a native-like experience.
+
+---
+
+## Credits
+
+- [Astro](https://astro.build/)
+- [Vue 3](https://vuejs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [WeatherAPI](https://www.weatherapi.com/)
+
+---
+
+## License
+
+MIT
