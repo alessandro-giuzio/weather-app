@@ -22,7 +22,7 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${encodeURIComponent(query)}&days=3&aqi=yes&alerts=yes`;
+    const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${encodeURIComponent(query)}&days=3&aqi=yes&alerts=yes&lang=en`;
 
     const res = await fetch(url);
 

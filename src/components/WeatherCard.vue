@@ -65,6 +65,34 @@
       </div>
     </div>
 
+    <div v-if="weather.forecast.forecastday[0]?.astro" class="max-w-md mx-auto">
+      <h3 class="text-lg font-semibold text-slate-700 dark:text-slate-200 mb-3 text-center">Sun & Moon</h3>
+      <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-4 backdrop-blur">
+        <div class="grid grid-cols-2 gap-4 text-center">
+          <div>
+            <p class="text-2xl mb-1">🌅</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Sunrise</p>
+            <p class="font-semibold text-slate-700 dark:text-slate-200">{{ weather.forecast.forecastday[0].astro.sunrise }}</p>
+          </div>
+          <div>
+            <p class="text-2xl mb-1">🌇</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Sunset</p>
+            <p class="font-semibold text-slate-700 dark:text-slate-200">{{ weather.forecast.forecastday[0].astro.sunset }}</p>
+          </div>
+          <div>
+            <p class="text-2xl mb-1">🌙</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Moon Phase</p>
+            <p class="font-semibold text-slate-700 dark:text-slate-200">{{ weather.forecast.forecastday[0].astro.moon_phase }}</p>
+          </div>
+          <div>
+            <p class="text-2xl mb-1">🌤️</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Moon Illumination</p>
+            <p class="font-semibold text-slate-700 dark:text-slate-200">{{ weather.forecast.forecastday[0].astro.moon_illumination }}%</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div v-if="weather.alerts?.alert?.length" class="max-w-md mx-auto space-y-2">
       <div
         v-for="(alert, index) in weather.alerts.alert"
@@ -81,17 +109,18 @@
 
     <div v-if="weather.forecast.forecastday[0]?.hour?.length" class="max-w-md mx-auto">
       <h3 class="text-lg font-semibold text-slate-700 dark:text-slate-200 mb-3 text-center">Hourly Forecast</h3>
-      <div class="flex gap-3 overflow-x-auto pb-2 snap-x">
+      <div class="flex gap-2 overflow-x-auto pb-2 snap-x">
         <div
           v-for="hour in hourlyData"
           :key="hour.time"
-          class="flex-shrink-0 bg-white/60 dark:bg-slate-800/60 rounded-lg p-3 text-center backdrop-blur snap-start min-w-[70px]"
+          class="flex-shrink-0 bg-white/60 dark:bg-slate-800/60 rounded-lg p-2 text-center backdrop-blur snap-start min-w-[65px]"
         >
           <p class="text-xs text-slate-500 dark:text-slate-400">{{ hour.time }}</p>
           <img :src="hour.condition.icon" :alt="hour.condition.text" class="w-8 h-8 my-1 mx-auto" aria-hidden="true" />
           <p class="text-sm font-semibold text-slate-700 dark:text-slate-200">
             {{ useCelsius ? hour.temp_c : hour.temp_f }}°
           </p>
+          <p v-if="hour.chance_of_rain" class="text-xs text-sky-600 dark:text-sky-400">💧{{ hour.chance_of_rain }}%</p>
         </div>
       </div>
     </div>
@@ -115,9 +144,7 @@
             <p class="font-bold text-slate-700 dark:text-slate-200">
               {{ useCelsius ? Math.round(day.day.avgtemp_c) : Math.round(day.day.avgtemp_f) }}°
             </p>
-            <p class="text-xs text-slate-400">
-              UV {{ day.day.uv }}
-            </p>
+            <p class="text-xs text-slate-400">UV {{ day.day.uv }}</p>
           </div>
         </div>
       </div>
