@@ -1,14 +1,17 @@
 @import 'tailwindcss';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 body {
   font-family: 'Nunito Variable', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 footer {
   margin-top: 2rem;
   font-size: 0.75rem;
   text-align: center;
-  color: #0369a1; /* Tailwind's sky-700 */
+  color: #0369a1;
 }
 
 footer a {
@@ -32,6 +35,60 @@ footer a:hover {
   }
 }
 
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .animate-pop-fade {
   animation: pop-fade 0.4s ease-out both;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out both;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+::-webkit-scrollbar {
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(226, 232, 240);
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: rgb(51, 65, 85);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(148, 163, 184);
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgb(100, 116, 139);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(100, 116, 139);
 }

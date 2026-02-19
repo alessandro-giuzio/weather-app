@@ -1,7 +1,6 @@
 ---
 const { title = 'El tiempo' } = Astro.props;
-import '@/styles/global.css';
-// Supports weights 200-900
+import '../styles/global.css';
 import '@fontsource-variable/nunito-sans';
 ---
 
@@ -13,9 +12,10 @@ import '@fontsource-variable/nunito-sans';
     <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
     <meta name='generator' content={Astro.generator} />
     <title>{title}</title>
+    <meta name='description' content='Check the weather in any city worldwide' />
+    <link rel='manifest' href='/manifest.json' />
   </head>
-  <body
-    class='bg-gradient-to-br from-sky-100 to-sky-300 text-sky-900 min-h-screen p-4 font-sans flex flex-col'>
+  <body class='bg-gradient-to-br from-sky-100 to-sky-300 dark:from-slate-800 dark:to-slate-900 text-sky-900 dark:text-sky-100 min-h-screen p-4 font-sans flex flex-col transition-colors duration-300'>
     <div class='flex-grow'>
       <slot />
     </div>

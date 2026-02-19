@@ -1,54 +1,96 @@
 <template>
   <div class="space-y-6">
-    <WeatherSearch @search="fetchWeather" />
+    <div class="flex justify-end gap-2">
+      <button
+        @click="toggleUnit"
+        class="p-2 rounded-lg bg-sky-100 dark:bg-sky-900 text-sky-700 dark:text-sky-300 hover:bg-sky-200 dark:hover:bg-sky-800 transition-colors"
+        :title="useCelsius ? 'Switch to Fahrenheit' : 'Switch to Celsius'"
+      >
+        {{ useCelsius ? '°C' : '°F' }}
+      </button>
+      <button
+        @click="toggleDarkMode"
+        class="p-2 rounded-lg bg-sky-100 dark:bg-sky-900 text-sky-700 dark:text-sky-300 hover:bg-sky-200 dark:hover:bg-sky-800 transition-colors"
+        :title="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
+      >
+        {{ isDarkMode ? '☀️' : '🌙' }}
+      </button>
+    </div>
 
-    <div v-if="loading" class="text-sky-600 animate-pulse">Loading...</div>
+    <WeatherSearch
+      :recent-searches="recentSearches"
+      :favorites="favorites"
+      :loading="loading"
+      @search="handleSearch"
+      @select-recent="handleSearch"
+      @remove-recent="removeRecent"
+      @toggle-favorite="toggleFavorite"
+    />
 
-    <div v-if="error" class="text-red-600">{{ error }}</div>
+    <div v-if="loading" class="flex justify-center py-8">
+      <div class="animate-spin rounded-full h-10 w-10 border-4 border-sky-500 border-t-transparent"></div>
+    </div>
 
-    <WeatherCard v-if="weatherData" :weather="weatherData" />
+    <div v-if="error" class="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg p-4 text-red-600 dark:text-red-400">
+      {{ error }}
+    </div>
+
+    <WeatherCard
+      v-if="weatherData && !loading"
+      :weather="weatherData"
+      :use-celsius="useCelsius"
+      :is-favorite="isFavorite(weatherData.location.name)"
+      @toggle-favorite="toggleFavorite(weatherData.location.name)"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 import WeatherSearch from './WeatherSearch.vue';
 import WeatherCard from './WeatherCard.vue';
+import { useWeather } from '../composables/useWeather';
 
-const weatherData = ref();
-const error = ref<string | null>(null);
-const loading = ref(false);
+const {
+  weatherData,
+  loading,
+  error,
+  recentSearches,
+  favorites,
+  isDarkMode,
+  useCelsius,
+  loadFromStorage,
+  removeRecent,
+  toggleFavorite,
+  isFavorite,
+  toggleDarkMode,
+  toggleUnit,
+  fetchWeather,
+} = useWeather();
 
-const fetchWeather = async (query: string) => {
-  const apiKey = import.meta.env.PUBLIC_WEATHER_API_KEY;
-  const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${encodeURIComponent(
-    query
-  )}&days=3&aqi=no&alerts=no`;
-
-  try {
-    loading.value = true;
-    error.value = null;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('City not found');
-    weatherData.value = await res.json();
-  } catch (err: any) {
-    weatherData.value = null;
-    error.value = err.message;
-  } finally {
-    loading.value = false;
-  }
+const handleSearch = (query: string) => {
+  fetchWeather(query);
 };
 
-// ✅ On mount, try geolocation
 onMounted(() => {
+  loadFromStorage();
+
+  if (isDarkMode.value) {
+    document.documentElement.classList.add('dark');
+  }
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(console.error);
+  }
+
   if ('geolocation' in navigator) {
     navigator.geolocation.getCurrentPosition(
-      position => {
+      (position) => {
         const coords = `${position.coords.latitude},${position.coords.longitude}`;
         fetchWeather(coords);
       },
       () => {
-        console.warn('Geolocation denied or failed. Waiting for manual input.');
+        console.warn('Geolocation denied. Waiting for manual input.');
       }
     );
   }
