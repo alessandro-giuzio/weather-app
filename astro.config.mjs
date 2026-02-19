@@ -1,14 +1,12 @@
 import { defineConfig } from 'astro/config';
 import vue from '@astrojs/vue';
 import tailwindcss from '@tailwindcss/vite';
-import node from '@astrojs/node';
+import netlify from '@astrojs/netlify';
 
 export default defineConfig({
   output: 'server',
   integrations: [vue()],
-  adapter: node({
-    mode: 'standalone',
-  }),
+  adapter: netlify(),
   vite: {
     resolve: {
       alias: {
