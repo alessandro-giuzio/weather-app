@@ -41,6 +41,7 @@
       :use-celsius="useCelsius"
       :is-favorite="isFavorite(weatherData.location.name)"
       @toggle-favorite="toggleFavorite(weatherData.location.name)"
+      @refresh="refreshWeather"
     />
   </div>
 </template>
@@ -66,6 +67,7 @@ const {
   toggleDarkMode,
   toggleUnit,
   fetchWeather,
+  refreshWeather,
 } = useWeather();
 
 const handleSearch = (query: string) => {

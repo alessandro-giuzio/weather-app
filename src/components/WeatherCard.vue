@@ -10,14 +10,32 @@
           </h2>
           <p class="text-sm text-slate-500 dark:text-slate-400">{{ weather.location.country }}</p>
         </div>
-        <button
-          @click="$emit('toggle-favorite')"
-          class="text-2xl transition-transform hover:scale-110"
-          :title="isFavorite ? 'Remove from favorites' : 'Add to favorites'"
-          :aria-label="isFavorite ? 'Remove from favorites' : 'Add to favorites'"
-        >
-          {{ isFavorite ? '⭐' : '☆' }}
-        </button>
+        <div class="flex gap-2">
+          <button
+            @click="$emit('refresh')"
+            class="text-xl transition-transform hover:scale-110"
+            title="Refresh"
+            aria-label="Refresh weather"
+          >
+            🔄
+          </button>
+          <button
+            @click="shareWeather"
+            class="text-xl transition-transform hover:scale-110"
+            title="Share"
+            aria-label="Share weather"
+          >
+            📤
+          </button>
+          <button
+            @click="$emit('toggle-favorite')"
+            class="text-2xl transition-transform hover:scale-110"
+            :title="isFavorite ? 'Remove from favorites' : 'Add to favorites'"
+            :aria-label="isFavorite ? 'Remove from favorites' : 'Add to favorites'"
+          >
+            {{ isFavorite ? '⭐' : '☆' }}
+          </button>
+        </div>
       </div>
 
       <div class="my-6">
@@ -38,7 +56,7 @@
         />
       </div>
 
-      <div class="grid grid-cols-2 gap-4 mt-6 text-sm">
+      <div class="grid grid-cols-2 gap-3 mt-6 text-sm">
         <div class="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-3">
           <p class="text-slate-500 dark:text-slate-400">Feels Like</p>
           <p class="font-semibold text-slate-700 dark:text-slate-200">
@@ -57,9 +75,25 @@
           <p class="text-slate-500 dark:text-slate-400">UV Index</p>
           <p class="font-semibold" :class="uvColor">{{ weather.current.uv }}</p>
         </div>
+        <div class="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-3">
+          <p class="text-slate-500 dark:text-slate-400">Visibility</p>
+          <p class="font-semibold text-slate-700 dark:text-slate-200">{{ weather.current.vis_km }} km</p>
+        </div>
+        <div class="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-3">
+          <p class="text-slate-500 dark:text-slate-400">Pressure</p>
+          <p class="font-semibold text-slate-700 dark:text-slate-200">{{ weather.current.pressure_mb }} mb</p>
+        </div>
+        <div class="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-3">
+          <p class="text-slate-500 dark:text-slate-400">Cloud</p>
+          <p class="font-semibold text-slate-700 dark:text-slate-200">{{ weather.current.cloud }}%</p>
+        </div>
+        <div class="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-3">
+          <p class="text-slate-500 dark:text-slate-400">Last Updated</p>
+          <p class="font-semibold text-slate-700 dark:text-slate-200 text-xs">{{ lastUpdated }}</p>
+        </div>
       </div>
 
-      <div v-if="weather.current.air_quality" class="mt-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg p-3">
+      <div v-if="weather.current.air_quality" class="mt-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg p-3">
         <p class="text-slate-500 dark:text-slate-400 text-sm">Air Quality (US EPA)</p>
         <p class="font-semibold text-slate-700 dark:text-slate-200">{{ aqiLabel }}</p>
       </div>
@@ -140,11 +174,16 @@
             <img :src="day.day.condition.icon" :alt="day.day.condition.text" class="w-10 h-10" aria-hidden="true" />
             <span class="text-sm text-slate-500 dark:text-slate-400 capitalize">{{ day.day.condition.text }}</span>
           </div>
-          <div class="text-right">
-            <p class="font-bold text-slate-700 dark:text-slate-200">
-              {{ useCelsius ? Math.round(day.day.avgtemp_c) : Math.round(day.day.avgtemp_f) }}°
-            </p>
-            <p class="text-xs text-slate-400">UV {{ day.day.uv }}</p>
+          <div class="text-right flex items-center gap-2">
+            <p v-if="day.day.daily_chance_of_rain" class="text-xs text-sky-600 dark:text-sky-400">💧{{ day.day.daily_chance_of_rain }}%</p>
+            <div>
+              <p class="font-bold text-slate-700 dark:text-slate-200">
+                {{ useCelsius ? Math.round(day.day.maxtemp_c) : Math.round(day.day.maxtemp_f) }}°
+                <span class="text-slate-400 font-normal">/
+                  {{ useCelsius ? Math.round(day.day.mintemp_c) : Math.round(day.day.mintemp_f) }}°</span>
+              </p>
+              <p class="text-xs text-slate-400">UV {{ day.day.uv }}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -164,12 +203,21 @@ const props = defineProps<{
 
 defineEmits<{
   (e: 'toggle-favorite'): void;
+  (e: 'refresh'): void;
 }>();
 
 const aqiLevels = ['Good', 'Moderate', 'Unhealthy for Sensitive', 'Unhealthy', 'Very Unhealthy', 'Hazardous'];
 const aqiLabel = computed(() => {
   const index = props.weather.current.air_quality?.['us-epa-index'] || 1;
   return aqiLevels[Math.min(index - 1, 5)] || 'Unknown';
+});
+
+const lastUpdated = computed(() => {
+  return new Date(props.weather.current.last_updated).toLocaleTimeString('en-US', { 
+    hour: 'numeric', 
+    minute: '2-digit',
+    hour12: true 
+  });
 });
 
 const uvColor = computed(() => {
@@ -199,4 +247,21 @@ const hourlyData = computed(() => {
       time: new Date(h.time).toLocaleTimeString('en-US', { hour: 'numeric', hour12: true }),
     }));
 });
+
+const shareWeather = async () => {
+  const { name, country } = props.weather.location;
+  const temp = props.useCelsius ? props.weather.current.temp_c : props.weather.current.temp_f;
+  const condition = props.weather.current.condition.text;
+  const text = `Weather in ${name}, ${country}: ${temp}° - ${condition}`;
+  
+  if (navigator.share) {
+    try {
+      await navigator.share({ text });
+    } catch (e) {
+      // User cancelled or error
+    }
+  } else {
+    await navigator.clipboard.writeText(text);
+  }
+};
 </script>

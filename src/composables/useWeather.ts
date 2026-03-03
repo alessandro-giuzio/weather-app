@@ -18,6 +18,10 @@ export interface WeatherData {
     feelslike_c: number;
     feelslike_f: number;
     uv: number;
+    vis_km: number;
+    pressure_mb: number;
+    cloud: number;
+    last_updated: string;
     air_quality: {
       'us-epa-index': number;
     };
@@ -37,6 +41,9 @@ export interface ForecastDay {
     avgtemp_f: number;
     maxtemp_c: number;
     mintemp_c: number;
+    maxtemp_f: number;
+    mintemp_f: number;
+    daily_chance_of_rain: number;
     condition: {
       text: string;
       icon: string;
@@ -44,12 +51,19 @@ export interface ForecastDay {
     uv: number;
   };
   hour: HourForecast[];
+  astro: {
+    sunrise: string;
+    sunset: string;
+    moon_phase: string;
+    moon_illumination: string;
+  };
 }
 
 export interface HourForecast {
   time: string;
   temp_c: number;
   temp_f: number;
+  chance_of_rain: number;
   condition: {
     text: string;
     icon: string;
@@ -80,6 +94,7 @@ export function useWeather() {
   const favorites = ref<string[]>([]);
   const isDarkMode = ref(false);
   const useCelsius = ref(true);
+  const lastSearch = ref<string>('');
 
   const loadFromStorage = () => {
     if (typeof window === 'undefined') return;
@@ -135,6 +150,7 @@ export function useWeather() {
   };
 
   const fetchWeather = async (query: string) => {
+    lastSearch.value = query;
     loading.value = true;
     error.value = null;
 
@@ -161,6 +177,12 @@ export function useWeather() {
     }
   };
 
+  const refreshWeather = () => {
+    if (lastSearch.value) {
+      fetchWeather(lastSearch.value);
+    }
+  };
+
   watch(isDarkMode, (dark) => {
     if (typeof document !== 'undefined') {
       document.documentElement.classList.toggle('dark', dark);
@@ -182,5 +204,6 @@ export function useWeather() {
     toggleDarkMode,
     toggleUnit,
     fetchWeather,
+    refreshWeather,
   };
 }
