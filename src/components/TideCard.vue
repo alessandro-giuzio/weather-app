@@ -1,11 +1,30 @@
 <template>
-  <div v-if="tideData" class="max-w-md mx-auto space-y-4">
-    <div class="bg-white/60 dark:bg-slate-800/60 rounded-2xl p-4 backdrop-blur animate-fade-in-up">
+  <div class="max-w-md mx-auto space-y-4">
+    <div v-if="tideLoading" class="bg-white/60 dark:bg-slate-800/60 rounded-2xl p-6 backdrop-blur text-center">
+      <div class="animate-spin rounded-full h-8 w-8 border-3 border-sky-500 border-t-transparent mx-auto mb-2"></div>
+      <p class="text-sm text-slate-500 dark:text-slate-400">Loading tide data...</p>
+    </div>
+
+    <div v-else-if="tideError" class="bg-white/60 dark:bg-slate-800/60 rounded-2xl p-4 backdrop-blur">
+      <div class="flex items-center gap-3">
+        <span class="text-2xl">🌊</span>
+        <div>
+          <p class="text-sm font-medium text-slate-600 dark:text-slate-300">Tide</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400">{{ tideError }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div v-else-if="tideData" class="bg-white/60 dark:bg-slate-800/60 rounded-2xl p-4 backdrop-blur animate-fade-in-up">
       <div class="flex items-center justify-between mb-3">
         <h3 class="text-lg font-semibold text-slate-700 dark:text-slate-200">🌊 Tide</h3>
-        <span class="text-xs text-slate-500 dark:text-slate-400">
-          {{ tideData.tide_height_unit || 'm' }}
-        </span>
+        <button
+          @click="fetchTide"
+          class="text-xs text-sky-600 dark:text-sky-400 hover:underline"
+          :disabled="tideLoading"
+        >
+          Refresh
+        </button>
       </div>
 
       <div class="text-center mb-4">
@@ -74,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref, watch, onMounted } from 'vue';
 
 interface TideData {
   latitude: number;
@@ -106,8 +125,14 @@ const tideError = ref<string | null>(null);
 const tideLoading = ref(false);
 
 const fetchTide = async () => {
+  if (props.lat == null || props.lon == null) {
+    tideError.value = 'Location coordinates not available';
+    return;
+  }
+
   tideLoading.value = true;
   tideError.value = null;
+  tideData.value = null;
 
   try {
     const res = await fetch('/api/tide', {
@@ -117,7 +142,7 @@ const fetchTide = async () => {
     });
 
     const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Failed to load tide data');
+    if (!res.ok) throw new Error(data.error || 'No tide data');
     tideData.value = data;
   } catch (err: any) {
     tideError.value = err.message;
@@ -126,19 +151,23 @@ const fetchTide = async () => {
   }
 };
 
-const now = new Date();
 const currentHourIndex = computed(() => {
   const hours = tideData.value?.hourly?.time ?? [];
+  if (!hours.length) return 0;
+  const now = new Date();
   const currentISO = now.toISOString().slice(0, 13) + ':00';
   const idx = hours.indexOf(currentISO);
-  return idx >= 0 ? idx : 0;
+  if (idx >= 0) return idx;
+  const prevIso = new Date(now.getTime() - 3600000).toISOString().slice(0, 13) + ':00';
+  const prevIdx = hours.indexOf(prevIso);
+  return prevIdx >= 0 ? prevIdx : 0;
 });
 
 const currentTide = computed(() => {
-  const hours = tideData.value?.hourly?.tide_height ?? [];
+  const heights = tideData.value?.hourly?.tide_height ?? [];
   const idx = currentHourIndex.value;
-  const height = hours[idx] ?? 0;
-  const nextHeight = hours[idx + 1] ?? height;
+  const height = heights[idx] ?? 0;
+  const nextHeight = heights[idx + 1] ?? height;
   return {
     height,
     heightFeet: height * 3.28084,
@@ -149,7 +178,7 @@ const currentTide = computed(() => {
 const tideStatus = computed(() => {
   const ch = currentTide.value.change;
   if (Math.abs(ch) < 0.01) return 'Slack Tide';
-  return ch > 0 ? '🌊 Rising' : '🌊 Falling';
+  return ch > 0 ? 'Rising' : 'Falling';
 });
 
 const tideStatusColor = computed(() => {
@@ -242,6 +271,8 @@ const dailyExtremes = computed(() => {
     };
   });
 });
+
+watch(() => [props.lat, props.lon], fetchTide);
 
 onMounted(fetchTide);
 </script>
