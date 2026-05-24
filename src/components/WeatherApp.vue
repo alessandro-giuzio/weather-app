@@ -43,6 +43,12 @@
       @toggle-favorite="toggleFavorite(weatherData.location.name)"
       @refresh="refreshWeather"
     />
+
+    <TideCard
+      v-if="weatherData && !loading"
+      :lat="weatherData.location.lat"
+      :lon="weatherData.location.lon"
+    />
   </div>
 </template>
 
@@ -50,6 +56,7 @@
 import { onMounted } from 'vue';
 import WeatherSearch from './WeatherSearch.vue';
 import WeatherCard from './WeatherCard.vue';
+import TideCard from './TideCard.vue';
 import { useWeather } from '../composables/useWeather';
 
 const {
