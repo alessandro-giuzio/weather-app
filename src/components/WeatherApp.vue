@@ -1,18 +1,16 @@
 <template>
-  <div class="space-y-6">
+  <div class="space-y-6 h-[100svh]">
     <div class="flex justify-end gap-2">
       <button
         @click="toggleUnit"
         class="p-2 rounded-lg bg-sky-100 dark:bg-sky-900 text-sky-700 dark:text-sky-300 hover:bg-sky-200 dark:hover:bg-sky-800 transition-colors"
-        :title="useCelsius ? 'Switch to Fahrenheit' : 'Switch to Celsius'"
-      >
+        :title="useCelsius ? 'Switch to Fahrenheit' : 'Switch to Celsius'">
         {{ useCelsius ? '°C' : '°F' }}
       </button>
       <button
         @click="toggleDarkMode"
         class="p-2 rounded-lg bg-sky-100 dark:bg-sky-900 text-sky-700 dark:text-sky-300 hover:bg-sky-200 dark:hover:bg-sky-800 transition-colors"
-        :title="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
-      >
+        :title="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'">
         <Sun v-if="isDarkMode" class="w-5 h-5" />
         <Moon v-else class="w-5 h-5" />
       </button>
@@ -25,14 +23,16 @@
       @search="handleSearch"
       @select-recent="handleSearch"
       @remove-recent="removeRecent"
-      @toggle-favorite="toggleFavorite"
-    />
+      @toggle-favorite="toggleFavorite" />
 
     <div v-if="loading" class="flex justify-center py-8">
-      <div class="animate-spin rounded-full h-10 w-10 border-4 border-sky-500 border-t-transparent"></div>
+      <div
+        class="animate-spin rounded-full h-10 w-10 border-4 border-sky-500 border-t-transparent"></div>
     </div>
 
-    <div v-if="error" class="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg p-4 text-red-600 dark:text-red-400">
+    <div
+      v-if="error"
+      class="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg p-4 text-red-600 dark:text-red-400">
       {{ error }}
     </div>
 
@@ -42,14 +42,12 @@
       :use-celsius="useCelsius"
       :is-favorite="isFavorite(weatherData.location.name)"
       @toggle-favorite="toggleFavorite(weatherData.location.name)"
-      @refresh="refreshWeather"
-    />
+      @refresh="refreshWeather" />
 
     <TideCard
       v-if="weatherData && !loading"
       :lat="weatherData.location.lat"
-      :lon="weatherData.location.lon"
-    />
+      :lon="weatherData.location.lon" />
   </div>
 </template>
 
@@ -96,13 +94,13 @@ onMounted(() => {
 
   if ('geolocation' in navigator) {
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      position => {
         const coords = `${position.coords.latitude},${position.coords.longitude}`;
         fetchWeather(coords);
       },
       () => {
         console.warn('Geolocation denied. Waiting for manual input.');
-      }
+      },
     );
   }
 });
