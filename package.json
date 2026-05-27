@@ -13,6 +13,7 @@
     "@astrojs/node": "^9.1.0",
     "@astrojs/vue": "^5.1.2",
     "@fontsource-variable/nunito-sans": "^5.2.6",
+    "@lucide/vue": "^1.16.0",
     "@tailwindcss/vite": "^4.1.10",
     "astro": "^5.15.3",
     "tailwindcss": "^4.1.10",

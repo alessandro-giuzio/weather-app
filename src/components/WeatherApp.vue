@@ -13,7 +13,8 @@
         class="p-2 rounded-lg bg-sky-100 dark:bg-sky-900 text-sky-700 dark:text-sky-300 hover:bg-sky-200 dark:hover:bg-sky-800 transition-colors"
         :title="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
       >
-        {{ isDarkMode ? '☀️' : '🌙' }}
+        <Sun v-if="isDarkMode" class="w-5 h-5" />
+        <Moon v-else class="w-5 h-5" />
       </button>
     </div>
 
@@ -54,6 +55,7 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
+import { Sun, Moon } from '@lucide/vue';
 import WeatherSearch from './WeatherSearch.vue';
 import WeatherCard from './WeatherCard.vue';
 import TideCard from './TideCard.vue';

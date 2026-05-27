@@ -9,7 +9,9 @@
 
     <div v-else-if="marineData" class="bg-white/60 dark:bg-slate-800/60 rounded-2xl p-4 backdrop-blur animate-fade-in-up">
       <div class="flex items-center justify-between mb-3">
-        <h3 class="text-lg font-semibold text-slate-700 dark:text-slate-200">🌊 Ocean & Waves</h3>
+        <h3 class="text-lg font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-2">
+          <Waves class="w-5 h-5" />Ocean & Waves
+        </h3>
         <button
           @click="fetchMarine"
           class="text-xs text-sky-600 dark:text-sky-400 hover:underline"
@@ -82,6 +84,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch, onMounted } from 'vue';
+import { Waves } from '@lucide/vue';
 
 interface MarineData {
   latitude: number;

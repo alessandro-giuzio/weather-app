@@ -13,27 +13,27 @@
         <div class="flex gap-2">
           <button
             @click="$emit('refresh')"
-            class="text-xl transition-transform hover:scale-110"
+            class="transition-transform hover:scale-110 text-slate-600 dark:text-slate-300"
             title="Refresh"
             aria-label="Refresh weather"
           >
-            🔄
+            <RefreshCw class="w-5 h-5" />
           </button>
           <button
             @click="shareWeather"
-            class="text-xl transition-transform hover:scale-110"
+            class="transition-transform hover:scale-110 text-slate-600 dark:text-slate-300"
             title="Share"
             aria-label="Share weather"
           >
-            📤
+            <Share2 class="w-5 h-5" />
           </button>
           <button
             @click="$emit('toggle-favorite')"
-            class="text-2xl transition-transform hover:scale-110"
+            class="transition-transform hover:scale-110 text-amber-400"
             :title="isFavorite ? 'Remove from favorites' : 'Add to favorites'"
             :aria-label="isFavorite ? 'Remove from favorites' : 'Add to favorites'"
           >
-            {{ isFavorite ? '⭐' : '☆' }}
+            <Star class="w-5 h-5" :fill="isFavorite ? 'currentColor' : 'none'" />
           </button>
         </div>
       </div>
@@ -104,22 +104,22 @@
       <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-4 backdrop-blur">
         <div class="grid grid-cols-2 gap-4 text-center">
           <div>
-            <p class="text-2xl mb-1">🌅</p>
+            <Sunrise class="w-6 h-6 mx-auto mb-1 text-amber-500" />
             <p class="text-xs text-slate-500 dark:text-slate-400">Sunrise</p>
             <p class="font-semibold text-slate-700 dark:text-slate-200">{{ weather.forecast.forecastday[0].astro.sunrise }}</p>
           </div>
           <div>
-            <p class="text-2xl mb-1">🌇</p>
+            <Sunset class="w-6 h-6 mx-auto mb-1 text-orange-500" />
             <p class="text-xs text-slate-500 dark:text-slate-400">Sunset</p>
             <p class="font-semibold text-slate-700 dark:text-slate-200">{{ weather.forecast.forecastday[0].astro.sunset }}</p>
           </div>
           <div>
-            <p class="text-2xl mb-1">🌙</p>
+            <Moon class="w-6 h-6 mx-auto mb-1 text-slate-400" />
             <p class="text-xs text-slate-500 dark:text-slate-400">Moon Phase</p>
             <p class="font-semibold text-slate-700 dark:text-slate-200">{{ weather.forecast.forecastday[0].astro.moon_phase }}</p>
           </div>
           <div>
-            <p class="text-2xl mb-1">🌤️</p>
+            <CircleDot class="w-6 h-6 mx-auto mb-1 text-slate-400" />
             <p class="text-xs text-slate-500 dark:text-slate-400">Moon Illumination</p>
             <p class="font-semibold text-slate-700 dark:text-slate-200">{{ weather.forecast.forecastday[0].astro.moon_illumination }}%</p>
           </div>
@@ -134,7 +134,7 @@
         class="bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700 rounded-lg p-4"
       >
         <div class="flex items-center gap-2 text-amber-700 dark:text-amber-400">
-          <span class="text-xl">⚠️</span>
+          <TriangleAlert class="w-5 h-5 flex-shrink-0" />
           <h3 class="font-semibold">{{ alert.event || alert.headline }}</h3>
         </div>
         <p v-if="alert.event && alert.event !== alert.headline" class="text-sm text-amber-600 dark:text-amber-300 mt-1">{{ alert.headline }}</p>
@@ -154,7 +154,7 @@
           <p class="text-sm font-semibold text-slate-700 dark:text-slate-200">
             {{ useCelsius ? hour.temp_c : hour.temp_f }}°
           </p>
-          <p v-if="hour.chance_of_rain" class="text-xs text-sky-600 dark:text-sky-400">💧{{ hour.chance_of_rain }}%</p>
+          <p v-if="hour.chance_of_rain" class="text-xs text-sky-600 dark:text-sky-400"><Droplets class="w-3 h-3 inline-block" />{{ hour.chance_of_rain }}%</p>
         </div>
       </div>
     </div>
@@ -193,6 +193,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { RefreshCw, Share2, Star, Sunrise, Sunset, Moon, CircleDot, TriangleAlert, Droplets } from '@lucide/vue';
 import type { WeatherData, HourForecast } from '../composables/useWeather';
 
 const props = defineProps<{

@@ -16,20 +16,7 @@
         type="submit"
         :disabled="loading || !city.trim()"
         class="bg-sky-500 hover:bg-sky-600 disabled:bg-sky-300 dark:disabled:bg-sky-700 text-white px-6 py-2.5 rounded-lg shadow transition-all duration-150 active:scale-95 disabled:scale-100 flex items-center justify-center gap-2 min-w-[100px]">
-        <svg v-if="loading" class="animate-spin h-5 w-5" viewBox="0 0 24 24">
-          <circle
-            class="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            stroke-width="4"
-            fill="none" />
-          <path
-            class="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-        </svg>
+        <Loader2 v-if="loading" class="w-5 h-5 animate-spin" />
         <span v-else>Search</span>
       </button>
     </form>
@@ -47,14 +34,15 @@
             :key="'fav-' + fav"
             @click="$emit('select-recent', fav)"
             class="px-3 py-1.5 text-sm rounded-full bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300 hover:bg-amber-200 dark:hover:bg-amber-900 transition-colors flex items-center gap-1">
-            ⭐ {{ fav }}
+            <Star class="w-4 h-4 fill-current flex-shrink-0" />
+            {{ fav }}
             <span
               @click.stop="$emit('toggle-favorite', fav)"
               class="ml-1 hover:text-amber-900 dark:hover:text-amber-100 cursor-pointer"
               role="button"
               tabindex="0"
               aria-label="Remove from favorites">
-              ×
+              <X class="w-4 h-4" />
             </span>
           </button>
         </div>
@@ -69,7 +57,8 @@
             @click="$emit('select-recent', search)"
             class="px-3 py-1.5 text-sm rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors flex items-center gap-1"
           >
-            🕐 {{ search }}
+            <Clock class="w-4 h-4 flex-shrink-0" />
+            {{ search }}
             <span
               @click.stop="$emit('remove-recent', search)"
               class="ml-1 hover:text-red-500 cursor-pointer"
@@ -77,7 +66,7 @@
               tabindex="0"
               aria-label="Remove from recent"
             >
-              ×
+              <X class="w-4 h-4" />
             </span>
           </button>
         </div>
@@ -88,6 +77,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { Loader2, Star, X } from '@lucide/vue';
 
 defineProps<{
   recentSearches: string[];
