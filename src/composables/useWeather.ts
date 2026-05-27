@@ -170,7 +170,7 @@ export function useWeather() {
       }
 
       weatherData.value = data;
-      saveRecent(query);
+      saveRecent(data.location.name);
     } catch (err: any) {
       error.value = err.message;
       weatherData.value = null;

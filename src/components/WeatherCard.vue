@@ -127,9 +127,9 @@
       </div>
     </div>
 
-    <div v-if="weather.alerts?.alert?.length" class="max-w-md mx-auto space-y-2">
+    <div v-if="uniqueAlerts.length" class="max-w-md mx-auto space-y-2">
       <div
-        v-for="(alert, index) in weather.alerts.alert"
+        v-for="(alert, index) in uniqueAlerts"
         :key="index"
         class="bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700 rounded-lg p-4"
       >
@@ -137,7 +137,7 @@
           <span class="text-xl">⚠️</span>
           <h3 class="font-semibold">{{ alert.event || alert.headline }}</h3>
         </div>
-        <p class="text-sm text-amber-600 dark:text-amber-300 mt-1">{{ alert.headline }}</p>
+        <p v-if="alert.event && alert.event !== alert.headline" class="text-sm text-amber-600 dark:text-amber-300 mt-1">{{ alert.headline }}</p>
       </div>
     </div>
 
@@ -227,6 +227,17 @@ const uvColor = computed(() => {
   if (uv <= 7) return 'text-orange-600 dark:text-orange-400';
   if (uv <= 10) return 'text-red-600 dark:text-red-400';
   return 'text-purple-600 dark:text-purple-400';
+});
+
+const uniqueAlerts = computed(() => {
+  const alerts = props.weather.alerts?.alert ?? [];
+  const seen = new Set<string>();
+  return alerts.filter((a) => {
+    const key = `${a.event}|${a.headline}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 });
 
 const hourlyData = computed(() => {
