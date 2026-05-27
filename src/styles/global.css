@@ -3,7 +3,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 body {
-  font-family: 'Nunito Variable', sans-serif;
+  font-family: 'Space Grotesk Variable', sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
